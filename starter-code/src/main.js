@@ -45,24 +45,45 @@ $(document).ready(function(){
   // Add all the div's to the HTML
   document.getElementById('memory_board').innerHTML = html;
 
+
+  // Score: 
+  var $pairsClicked = $('#pairs_clicked').text();
+  var $pairsGuessed = $('#pairs_guessed').text();
+
+  
+
   // Bind the click event of each element to a function
   $('.card').on('click', function () {
     selectedCards.push(this);
-    $(this).find('.back:first').toggleClass('d-none');
-    $(this).find('.front').toggleClass('back');
+    $(this).children(':first').hide();
+    $(this).find('.front').addClass('back');
     console.log(selectedCards);
     // debugger;
+    
     if (selectedCards.length === 2) {
-      if (MemoryGame.prototype.checkIfPair(selectedCards[0].id, selectedCards[1].id)) {
-        console.log('la misma');
+      var firstCard = selectedCards[0];
+      var secondCard = selectedCards[1];
+      //MemoryGame.prototype.checkIfPair(firtsCard, secondCard);
+      if (MemoryGame.prototype.checkIfPair(firstCard.id, secondCard.id)) {
         selectedCards = [];
       } else {
-        console.log('noes la misma');
-        selectedCards = [];
+        setTimeout(function(){
+          notTheSame(firstCard, secondCard);
+        }, 700);
       }
+      selectedCards = [];
     }   
     
   });
+
+
+
+  function notTheSame(firstCard, secondCard){
+    $(firstCard).children(':first').show();
+    $(firstCard).find('.front').removeClass('back');
+    $(secondCard).children(':first').show();
+    $(secondCard).find('.front').removeClass('back');
+  }
 
 });
 
